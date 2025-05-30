@@ -7,10 +7,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.week3.model.Reminder
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListener {
     private lateinit var homeButton: ImageButton
     private lateinit var profileButton: ImageButton
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CustomAdapter
+
+    private var reminderList: MutableList<Reminder>? = null
+    private val fileName = "MyReminders.txt"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +32,13 @@ class MainActivity : AppCompatActivity() {
 
         homeButton = findViewById(R.id.homeBtn)
         profileButton = findViewById((R.id.profileBtn))
+
+        // Setup RecyclerView
+        recyclerView = findViewById(R.id.remindersRV)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        reminderList = loadReminders().toMutableList()
+        adapter = CustomAdapter(reminderList)
+        recyclerView.adapter = adapter
 
         // inflate default fragment
         supportFragmentManager.beginTransaction()
@@ -57,4 +72,16 @@ class MainActivity : AppCompatActivity() {
             it.imageTintList = ColorStateList.valueOf(black)
         }
     }
+
+    override fun onReminderCreated(reminder: Reminder) {
+        reminderList?.add(0, reminder)
+        adapter.notifyItemInserted(0)
+        recyclerView.scrollToPosition(0)
+
+        //saveReminders()
+    }
+
+//    private fun loadReminders(): List<Reminder> {
+//
+//    }
 }
