@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/idDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        style="@style/LabelStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/titleDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Walk The Dog"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/LabelStyle"
+        />
+    <ImageView
+        android:id="@+id/urgentDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toTopOf="@+id/titleDisplay"
+        app:layout_constraintBottom_toBottomOf="@+id/titleDisplay"
+        app:layout_constraintEnd_toStartOf="@+id/titleDisplay"
+        app:tint="@color/sky_blue"
+        android:src="@drawable/baseline_error_outline_24"
+        android:contentDescription=""
+        />
+    <TextView
+        android:id="@+id/descDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/titleDisplay"
+        app:layout_constraintBottom_toTopOf="@id/dateDisplay"
+        android:text="Else suffer the consequences"
+        android:paddingVertical="20dp"
+        style="@style/ValueStyle"
+        />
+    <TextView
+        android:id="@+id/dateDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/divider"
+        android:text="May 20, 2025 11:59:00PM"
+        />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

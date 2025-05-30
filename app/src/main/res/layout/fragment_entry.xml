@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EntryFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Reminder"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:background="@color/sky_blue"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Last Reminder: "
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            style="@style/LabelStyle"
+            />
+
+        <EditText
+            android:id="@+id/entryTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="top|start"
+            android:hint="Type here"
+            android:layout_marginHorizontal="20dp"
+            style="@style/ValueStyle"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Description"
+            android:layout_marginHorizontal="20dp"
+            style="@style/LabelStyle"
+            />
+        <EditText
+            android:id="@+id/descTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="top|start"
+            android:hint="Type here"
+            android:layout_marginHorizontal="20dp"
+            style="@style/ValueStyle"
+            />
+
+        <ToggleButton
+            android:id="@+id/urgentBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="20dp"
+            android:textOn="Urgent"
+            android:textOff="Not Urgent"
+            />
+
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:backgroundTint="@color/sky_blue"
+            android:text="Set Reminder"
+            />
+    </LinearLayout>
+
+</FrameLayout>
