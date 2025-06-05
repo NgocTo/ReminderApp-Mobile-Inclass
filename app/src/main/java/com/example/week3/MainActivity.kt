@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListen
         // Setup RecyclerView
         recyclerView = findViewById(R.id.remindersRV)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        reminderList = loadReminders().toMutableList()
+        // reminderList = loadReminders().toMutableList()
         adapter = CustomAdapter(reminderList)
         recyclerView.adapter = adapter
 
