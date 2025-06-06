@@ -60,7 +60,7 @@ class EntryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val titleInput = view.findViewById<EditText>(R.id.entryTxt)
-        val descInput = view.findViewById<EditText>(R.id.descDisplay)
+        val descInput = view.findViewById<EditText>(R.id.descTxt)
         val urgentToggle = view.findViewById<ToggleButton>(R.id.urgentBtn)
         val confirmBtn = view.findViewById<Button>(R.id.setBtn)
 
