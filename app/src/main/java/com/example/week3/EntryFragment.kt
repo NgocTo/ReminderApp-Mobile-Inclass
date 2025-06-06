@@ -6,10 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.Toast
 import android.widget.ToggleButton
+import com.example.week3.model.Category
 import com.example.week3.model.Reminder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -63,11 +66,24 @@ class EntryFragment : Fragment() {
         val descInput = view.findViewById<EditText>(R.id.descTxt)
         val urgentToggle = view.findViewById<ToggleButton>(R.id.urgentBtn)
         val confirmBtn = view.findViewById<Button>(R.id.setBtn)
+        val categorySpinner = view.findViewById<Spinner>(R.id.categorySpinner)
+
+        // Populate spinner with enum values
+        val categories = Category.entries.map { it.name }
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item, // provided by android
+            categories
+        )
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = adapter
 
         confirmBtn.setOnClickListener {
             val title = titleInput.text.toString().trim()
             val description = descInput.text.toString().trim()
             val isUrgent = urgentToggle.isChecked
+            val selectedCategory = categorySpinner.selectedItem.toString()
 
             if (title.isEmpty() || description.isEmpty()) {
                 Toast.makeText(requireContext(), "Please fill in all fields!", Toast.LENGTH_SHORT).show()
@@ -79,6 +95,7 @@ class EntryFragment : Fragment() {
                 title = title,
                 description = description,
                 dateTime = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+                category = Category.valueOf(selectedCategory),
                 isUrgent = isUrgent
             )
 
