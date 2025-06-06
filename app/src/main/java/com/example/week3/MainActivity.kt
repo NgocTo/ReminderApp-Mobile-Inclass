@@ -10,6 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.week3.model.Reminder
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.File
+import java.lang.reflect.Type
 
 class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListener {
     private lateinit var homeButton: ImageButton
@@ -36,7 +40,7 @@ class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListen
         // Setup RecyclerView
         recyclerView = findViewById(R.id.remindersRV)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        // reminderList = loadReminders().toMutableList()
+        reminderList = loadReminders().toMutableList()
         adapter = CustomAdapter(reminderList)
         recyclerView.adapter = adapter
 
@@ -78,10 +82,27 @@ class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListen
         adapter.notifyItemInserted(0)
         recyclerView.scrollToPosition(0)
 
-        //saveReminders()
+        saveReminders()
     }
 
-//    private fun loadReminders(): List<Reminder> {
-//
-//    }
+    private fun saveReminders() {
+        val json = Gson().toJson(reminderList)
+
+        openFileOutput(fileName, MODE_PRIVATE).use {
+            it.write(json.toByteArray())
+        }
+    }
+
+    private fun loadReminders(): List<Reminder> {
+        return try {
+            val file = File(filesDir, fileName)
+            if (!file.exists()) return emptyList()
+
+            val json = file.readText()
+            val type: Type = object : TypeToken<List<Reminder>>() {}.type
+            Gson().fromJson<List<Reminder>>(json, type) ?: emptyList()
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
 }
