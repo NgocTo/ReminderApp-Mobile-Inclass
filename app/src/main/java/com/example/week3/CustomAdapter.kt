@@ -3,6 +3,7 @@ package com.example.week3
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,9 @@ import com.example.week3.model.Reminder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class CustomAdapter(private val dataSet: List<Reminder>?) :
+class CustomAdapter(private val dataSet: List<Reminder>?,
+    private val onEmailClick: (Reminder) -> Unit, // a func that returns void
+    private val onDeleteClick: (Reminder) -> Unit) :
     RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     /**
@@ -23,6 +26,9 @@ class CustomAdapter(private val dataSet: List<Reminder>?) :
         val descTextView: TextView = view.findViewById(R.id.descDisplay)
         val dateTimeTextView: TextView = view.findViewById(R.id.dateDisplay)
         val urgentView: ImageView = view.findViewById(R.id.urgentDisplay)
+        val categoryTextView: TextView = view.findViewById((R.id.categoryDisplay))
+        val deleteBtnView: Button = view.findViewById((R.id.deleteBtn))
+        val emailBtnView: Button = view.findViewById((R.id.emailBtn))
     }
 
     // Create new views (invoked by the layout manager)
@@ -43,6 +49,8 @@ class CustomAdapter(private val dataSet: List<Reminder>?) :
             viewHolder.idTextView.text = reminder.id
             viewHolder.titleTextView.text = reminder.title
             viewHolder.descTextView.text = reminder.description
+            viewHolder.categoryTextView.text = reminder.category.toString()
+
 
             // Parse the dateTime string to LocalDateTime
             val dateTime = LocalDateTime.parse(reminder.dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
@@ -53,6 +61,10 @@ class CustomAdapter(private val dataSet: List<Reminder>?) :
 
             // Show or hide urgent icon
             viewHolder.urgentView.visibility = if(reminder.isUrgent) View.VISIBLE else View.INVISIBLE
+
+            // Button clicks
+            viewHolder.emailBtnView.setOnClickListener{ onEmailClick(reminder)}
+            viewHolder.deleteBtnView.setOnClickListener{ onDeleteClick(reminder)}
         }
     }
 

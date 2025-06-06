@@ -1,10 +1,12 @@
 package com.example.week3
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
 import java.lang.reflect.Type
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListener {
     private lateinit var homeButton: ImageButton
@@ -41,7 +45,11 @@ class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListen
         recyclerView = findViewById(R.id.remindersRV)
         recyclerView.layoutManager = LinearLayoutManager(this)
         reminderList = loadReminders().toMutableList()
-        adapter = CustomAdapter(reminderList)
+        adapter = CustomAdapter(
+            reminderList,
+            onEmailClick = { reminder -> onEmailClicked(reminder) },
+            onDeleteClick = { reminder -> onDeleteClicked(reminder) }
+        )
         recyclerView.adapter = adapter
 
         // inflate default fragment
@@ -103,6 +111,35 @@ class MainActivity : AppCompatActivity(),  EntryFragment.OnReminderCreatedListen
             Gson().fromJson<List<Reminder>>(json, type) ?: emptyList()
         } catch (e: Exception) {
             emptyList()
+        }
+    }
+
+    private fun onEmailClicked(reminder: Reminder) {
+        val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a")
+        val formattedDate = LocalDateTime.parse(reminder.dateTime).format(formatter)
+
+        val selectorIntent = Intent(Intent.ACTION_SENDTO)
+        selectorIntent.setData("mailto:".toUri())
+
+        val emailIntent = Intent(Intent.ACTION_SEND)
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("n_to239383@fanshaweonline.ca"))
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Reminder: ${reminder.title}")
+        emailIntent.putExtra(Intent.EXTRA_TEXT,
+            reminder.description +
+            "\n\nCreated: $formattedDate" +
+            "\n Category: ${reminder.category}" +
+            "\n Urgent? ${if (reminder.isUrgent) "Yes" else "No"}")
+
+        emailIntent.selector = selectorIntent
+        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+    }
+
+    private fun onDeleteClicked(reminder: Reminder) {
+        val index = reminderList?.indexOf(reminder) ?: -1
+        if (index != -1) {
+            reminderList?.removeAt(index)
+            adapter.notifyItemRemoved(index)
+            saveReminders()
         }
     }
 }
